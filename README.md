@@ -1,5 +1,5 @@
-# LinkSaver
-Chrome extension by KingMak and Umayah Abdennabi <br>
+# LinkSave
+Chrome extension by KingMak and Umayah Abdennabi
 
 Grab these images before running the extension and place them in the extension folder <br>
 Image one = [Here](https://40.media.tumblr.com/a3acdc969dd24d825635eb15a1fba2c4/tumblr_now0wq3EMQ1uwa3g1o2_75sq.png) <br>
