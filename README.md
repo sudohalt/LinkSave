@@ -1,3 +1,6 @@
+As of right, project files are old and outdated <br>
+Will upload new files as soon as possible <br>
+
 # LinkSave
 Chrome extension by KingMak and Umayah Abdennabi
 
