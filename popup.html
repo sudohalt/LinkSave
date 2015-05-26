@@ -1,36 +1,17 @@
 <!doctype html>
+<meta charset = "UTF-8">
+<!-- stupid comment -->
 
 <html>
-    <head>
-        <title>Getting Started Extension's Popup</title>
-        <style>
-            body
-            {
-                font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-                font-size: 100%;
-            }
-        
-            #status
-            {
-                white-space: pre;
-                text-overflow: ellipsis;
-                overflow: visible;
-                max-width: 400px;
-                color:orange;
-            }
-
-            p
-            {
-                color:orange;
-            }
-
-
-        </style>
-
-        <script src="popup.js"></script>
-    </head>
-    <body bgcolor = "#000000">
-        <div id = "status"></div>
-        <div id = "Links"><p><a href = "https://www.google.com"> test donot remove </a></p></div>
-    </body>
+	<head> 
+		<link rel = "stylesheet" type = "text/css" href = "css/Buttons.css"/>
+		<link rel = "stylesheet" type = "text/css" href = "css/PopupStatus.css"/>
+	</head>
+  <body bgcolor = "#ffffff">
+  	<button id = "SaveLinks">Save Links</button>
+    <button id = "OpenLinks">Open Links</button>
+    <script src = "js/Buttons.js"></script>    
+    <p id = "StatusLabel"></p> 
+    <script src = "js/StatusLabel.js"></script>
+  </body>
 </html>

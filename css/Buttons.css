@@ -1,0 +1,20 @@
+#SaveLinks, #OpenLinks
+{
+	width : 132px;
+	padding : 5px;
+	color : orange;
+	cursor : pointer;
+	font-size : 17px;
+	font-family : Arial;
+	border-radius : 28px; /* curve the buttons */
+	display : inline-block;
+	background-color : black;
+	border : 2px solid orange;
+}
+
+/* button pressed */
+#SaveLinks:active, #OpenLinks:active
+{
+	top : 1px;
+	position : relative;
+}
