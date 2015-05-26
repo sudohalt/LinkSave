@@ -1,7 +1,7 @@
 {
 	"manifest_version" : 2,
 	"name":"Link Save",
-	"description":"An extension to save your links to read later",
+	"description":"An extension to save the links of all all open tabs to read later",
 	"version":"1.0",
 	
 	"browser_action":

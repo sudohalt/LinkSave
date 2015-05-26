@@ -1,15 +1,33 @@
 #SaveLinks, #OpenLinks
 {
-	width : 132px;
-	padding : 5px;
-	color : orange;
-	cursor : pointer;
-	font-size : 17px;
-	font-family : Arial;
-	border-radius : 28px; /* curve the buttons */
-	display : inline-block;
-	background-color : black;
-	border : 2px solid orange;
+	width:200px;
+	background-color:#E4F3FF;
+	border:1px solid #79BCEA;
+	border-radius:4px;
+	padding:10px; 
+	margin:10px 5px;
+}
+
+.scrollContainer
+{
+	position: relative;
+	border: 1px solid #79BCEA;
+    bottom:0px;
+    left:0px;
+    right: 0px;
+    height:150px;
+    
+}
+
+.innerScroll
+{
+	position: absolute;
+	overflow-y: auto;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+    height: 100%;
 }
 
 /* button pressed */

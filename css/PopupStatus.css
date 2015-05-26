@@ -1,10 +1,8 @@
 #StatusLabel
 {
-	color : orange;
+	color: #79BCEA;
 	font-size : 20px;
-	text-align : center;
-	border-style: solid;	
-	font-family : Arial;
-	background : #def6cf;
-	border-color : #98bf21;	
+	text-align: center;
+	font-weight: bold;
+
 }

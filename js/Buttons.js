@@ -10,7 +10,7 @@ function saveTabs()
         var tabUrls = "";
         var tabTitles = "";
         var currentTabUrl = "";
-        
+        document.getElementById("openLinks").innerHTML = "";
         for (i = 0; i < tabs.length; i++)
         {
             currentTabUrl = tabs[i].url;
@@ -22,6 +22,7 @@ function saveTabs()
                 tabTitles += tabs[i].title + "\n";
                 tabCount++;  
             }
+            document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
         }
     });
 }
@@ -29,7 +30,7 @@ function saveTabs()
 function SaveLinks()
 {
 	saveTabs();
-	popupStatus("Links Saved");
+	popupStatus("Links Saved!");
 }
 
 function OpenLinks()
@@ -42,6 +43,7 @@ function popupStatus(statusText)
     document.getElementById('StatusLabel').textContent = statusText;
 }
 
+saveTabs();
 // FUNCTION CHAINGING is messed up
 document.getElementById("SaveLinks").addEventListener("click", function(){ SaveLinks() });
 document.getElementById("OpenLinks").addEventListener("click", function(){ OpenLinks() });
