@@ -18,7 +18,7 @@ function saveTabs()
                 currentTabUrl.substring(0, 12) != "view-source:" &&
                 currentTabUrl.substring(0, 19) != "chrome-extension://")
             {
-            	tabUrls += tabs[i]url + "\n";
+            	tabUrls += tabs[i].url + "\n";
                 tabTitles += tabs[i].title + "\n";
                 tabCount++;  
             }
