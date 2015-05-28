@@ -1,37 +1,36 @@
-#SaveLinks, #OpenLinks
+#saveLinks
 {
-	width:200px;
-	background-color:#E4F3FF;
-	border:1px solid #79BCEA;
-	border-radius:4px;
-	padding:10px; 
-	margin:10px 5px;
+	width : 200px;
+	background-color : #E4F3FF;
+	border : 1px solid #79BCEA;
+	border-radius : 4px;
+	padding : 10px; 
+	margin : 10px 5px;
 }
 
 .scrollContainer
 {
-	position: relative;
-	border: 1px solid #79BCEA;
-    bottom:0px;
-    left:0px;
-    right: 0px;
-    height:150px;
+	position : relative;
+	border : 1px solid #79BCEA;
+    bottom :0px;
+    left : 0px;
+    right : 0px;
+    height : 150px;
     
 }
 
 .innerScroll
 {
-	position: absolute;
-	overflow-y: auto;
-	top: 0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-    height: 100%;
+	position : absolute;
+	overflow-y : auto;
+	top : 0px;
+	bottom : 0px;
+	left : 0px;
+	right : 0px;
+    height : 100%;
 }
 
-/* button pressed */
-#SaveLinks:active, #OpenLinks:active
+#saveLinks:active
 {
 	top : 1px;
 	position : relative;
