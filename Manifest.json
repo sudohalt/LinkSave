@@ -13,7 +13,8 @@
 	"permissions": 
 	[
 		"activeTab",
-		"tabs"
+		"tabs",
+		"bookmarks"
 	],
 
 	"icons":
