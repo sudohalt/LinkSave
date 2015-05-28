@@ -1,8 +1,13 @@
 {
 	"manifest_version" : 2,
 	"name":"Link Save",
-	"description":"An extension to save the links of all all open tabs to read later",
 	"version":"1.0",
+
+	"description":"An extension to save the links of all open tabs to read later",
+	"icons":
+	{
+        "128": "images/128.png"
+    },
 	
 	"browser_action":
 	{
@@ -10,14 +15,21 @@
 		"default_popup":"popup.html"
 	},
 
+	"author": "Muhammad Khalid & Umayah Abdennabi",
+	
+	"background":
+	{
+		"scripts":
+		[
+			"js/rightClick.js"
+		]
+    },
+
 	"permissions": 
 	[
+		"contextMenus",
 		"activeTab",
 		"tabs"
-	],
-
-	"icons":
-	{
-        "128": "images/128.png"
-    }
+	]
 }
+
