@@ -1,8 +1,7 @@
-#StatusLabel
+#statusLabel
 {
 	color: #79BCEA;
 	font-size : 20px;
-	text-align: center;
 	font-weight: bold;
-
+	text-align: center;
 }
