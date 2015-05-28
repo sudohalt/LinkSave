@@ -1,5 +1,5 @@
 // very creative hack?
-var len = document.getElementById("StatusLabel").innerHTML;
+var len = document.getElementById("statusLabel").innerHTML;
 if (len > 0)
 {
 	var canvas = document.createElement('canvas');
@@ -8,5 +8,5 @@ if (len > 0)
 	var styleWidth = ctx.measureText(len).width;
 	var styleWidthString = styleWidth.toString() + "px";
 
-	document.getElementById("StatusLabel").style.width = styleWidthString;
+	document.getElementById("statusLabel").style.width = styleWidthString;
 }
