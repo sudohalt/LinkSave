@@ -1,4 +1,4 @@
-function saveTabs()
+function viewTabs()
 {
     // current tab = var queryInfo = { active: true, currentWindow: true };
     // all other tabs = var queryInfo = { active: false, currentWindow: true };
@@ -22,28 +22,28 @@ function saveTabs()
                 tabTitles += tabs[i].title + "\n";
                 tabCount++;  
             }
+            // Line below should only be used to view open tabs not save. We are not savin Chrome's Pages
             document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
         }
     });
 }
 
-function SaveLinks()
+function saveLinks()
 {
-	saveTabs();
+	viewTabs();
 	popupStatus("Links Saved!");
 }
 
-function OpenLinks()
+function openLinks()
 {
 	popupStatus("Links Opened");
 }
 
 function popupStatus(statusText)
 {
-    document.getElementById('StatusLabel').textContent = statusText;
+    document.getElementById('statusLabel').textContent = statusText;
 }
 
-saveTabs();
-// FUNCTION CHAINGING is messed up
-document.getElementById("SaveLinks").addEventListener("click", function(){ SaveLinks() });
-document.getElementById("OpenLinks").addEventListener("click", function(){ OpenLinks() });
+viewTabs();
+document.getElementById("saveLinks").addEventListener("click", function(){ saveLinks() });
+document.getElementById("openLinks").addEventListener("click", function(){ openLinks() });
