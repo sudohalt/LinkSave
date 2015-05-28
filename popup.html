@@ -1,6 +1,5 @@
 <!doctype html>
 <meta charset = "UTF-8">
-<!-- stupid comment -->
 
 <html>
 	<head> 
@@ -8,19 +7,21 @@
 		<link rel = "stylesheet" type = "text/css" href = "css/PopupStatus.css"/>
 	</head>
   <body bgcolor = "#ffffff">
-  	<button id = "SaveLinks">Save Links</button>
+  	<button id = "saveLinks">Save Links</button>
     <!-- <button id = "OpenLinks">Open Links</button> -->
-    <center><h3><font color=#79BCEA>Open Tabs</font></h3></center>
-    <div class="scrollContainer">
-      <div class="innerScroll">
-        <ol id="openLinks"></ol>
+    <center>
+      <h3>
+        <font color = "#79BCEA">Open Tabs</font>
+      </h3>
+    </center>
+    <div class = "scrollContainer">
+      <div class = "innerScroll">
+        <ol id = "openLinks"></ol>
       </div>
     </div>
-    <p id = "StatusLabel"></p> 
+    <p id = "statusLabel"></p> 
     <script src = "js/Buttons.js"></script>    
     <script src = "js/StatusLabel.js"></script>
-    <script>
-      saveTabs();
-    </script>
+    <!-- <script> viewTabs(); </script> [NOT ALLOWED BY CHROME has to be in src =]--> 
   </body>
 </html>
