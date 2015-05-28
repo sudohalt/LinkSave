@@ -8,7 +8,6 @@
 		<link rel = "stylesheet" type = "text/css" href = "css/PopupStatus.css"/>
 	</head>
   <body bgcolor = "#ffffff">
-  	<button id = "SaveLinks">Save Links</button>
     <!-- <button id = "OpenLinks">Open Links</button> -->
     <center><h3><font color=#79BCEA>Open Tabs</font></h3></center>
     <div class="scrollContainer">
@@ -16,11 +15,13 @@
         <ol id="openLinks"></ol>
       </div>
     </div>
-    <p id = "StatusLabel"></p> 
+    <center>
+      <button id = "SaveLinks">Save Checked Links</button>
+      <p id = "StatusLabel"></p> 
+      <button id = "Stats">Total Links Saved</button>
+      <p id = "StatsBox"></p>
+    </center>
     <script src = "js/Buttons.js"></script>    
     <script src = "js/StatusLabel.js"></script>
-    <script>
-      saveTabs();
-    </script>
   </body>
 </html>

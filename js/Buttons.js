@@ -12,6 +12,7 @@ function saveTabs()
     console.log("added folder: " + newFolder.title);
     bookmarkId = newFolder.id;
     });
+    chrome.bookmarks.getTree(function(c) {console.log(c);});
     chrome.tabs.query(queryInfo, function(tabs)
     {   
         var tabCount = 1;
@@ -22,15 +23,9 @@ function saveTabs()
         document.getElementById("openLinks").innerHTML = "";
         for (i = 0; i < tabs.length; i++)
         {
-            currentTabUrl = tabs[i].url;
-            if (currentTabUrl.substring(0, 9) != "chrome://" && 
-                currentTabUrl.substring(0, 12) != "view-source:" &&
-                currentTabUrl.substring(0, 19) != "chrome-extension://")
-            {
-            	chrome.bookmarks.create({'parentId': bookmarkId,
+            chrome.bookmarks.create({'parentId': bookmarkId,
                                'title': tabs[i].title,
                                'url': tabs[i].url});
-            }
             document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
         }
     });
@@ -39,6 +34,7 @@ function saveTabs()
 function viewTabs() {
     var queryInfo = {lastFocusedWindow: true};
     chrome.tabs.query(queryInfo, function(tabs) {
+        var currentTabUrl = "";
         document.getElementById("openLinks").innerHTML = "";
         for (i = 0; i < tabs.length; i++) {
             document.getElementById("openLinks").innerHTML += "<li><input type=\"checkbox\" checked>" + tabs[i].title + "</li>";

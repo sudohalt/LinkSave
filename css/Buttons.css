@@ -1,4 +1,4 @@
-#SaveLinks, #OpenLinks
+#SaveLinks, #OpenLinks, #Stats
 {
 	width:200px;
 	background-color:#E4F3FF;
@@ -16,6 +16,7 @@
     left:0px;
     right: 0px;
     height:150px;
+    width: 300px;
     
 }
 
@@ -31,7 +32,7 @@
 }
 
 /* button pressed */
-#SaveLinks:active, #OpenLinks:active
+#SaveLinks:active, #OpenLinks:active, #Stats:active
 {
 	top : 1px;
 	position : relative;
