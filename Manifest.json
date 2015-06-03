@@ -14,7 +14,8 @@
 	[
 		"activeTab",
 		"tabs",
-		"bookmarks"
+		"bookmarks",
+		"storage"
 	],
 
 	"icons":

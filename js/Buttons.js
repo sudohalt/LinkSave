@@ -1,77 +1,106 @@
-var showStatsBool = false;
+/* All rights reserved LinkSave
+ *
+ * Authors: Muhammad Khalid and Umayah Abdennabi
+ *
+ * This code is open source and is lincensed under the <insert licnese here>
+ * Source code is available on GitHub: <link to github>
+ *
+ */
 
-function saveTabs()
-{
-    // current tab = var queryInfo = { active: true, currentWindow: true };
-    // all other tabs = var queryInfo = { active: false, currentWindow: true };
-
+// Function saves all the currently open tabs in the active chrome window
+function saveTabs() {
     var queryInfo = {'lastFocusedWindow': true};
     var bookmarkId = null;
-    chrome.bookmarks.create({'title': 'LinkSave bookmarks'},
-                          function(newFolder) {
-    console.log("added folder: " + newFolder.title);
-    bookmarkId = newFolder.id;
-    });
-    chrome.bookmarks.getTree(function(c) {console.log(c);});
-    chrome.tabs.query(queryInfo, function(tabs)
-    {   
-        var tabCount = 1;
-        var tabUrls = "";
-        var tabTitles = "";
-        var currentTabUrl = "";
-        // Creat folder
-        document.getElementById("openLinks").innerHTML = "";
-        for (i = 0; i < tabs.length; i++)
-        {
-            chrome.bookmarks.create({'parentId': bookmarkId,
-                               'title': tabs[i].title,
-                               'url': tabs[i].url});
-            document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
+    var folderExists = ""
+    chrome.storage.sync.get('linkSaveFolderExists',
+        function(exists) {
+            if (chrome.runtime.lastError) {
+                console.log("Error unable to determine whether LinkSave folder exists");
+                return;
+            }
+            switch(exists["linkSaveFolderExists"]) {
+                case 1:
+                    chrome.storage.sync.get('linkSaveFolderId',
+                        function(folderId) {
+                            if (chrome.runtime.lastError) {
+                                console.log("Error: Unable to get LinkSave folder id");
+                                return;
+                            }
+                            bookmarkId = folderId["linkSaveFolderId"];
+                        }
+                    );
+                    chrome.tabs.query(queryInfo, 
+                        function(tabs) {   
+                            // Clear the scroll box, and update it with the links that were saved
+                            // Go through all the open tabs and save each one, and update the scroll view
+                            var newScrollView = ""
+                            for (i = 0; i < tabs.length; i++) {
+                                if (document.getElementById(i.toString()).checked) {
+                                    chrome.bookmarks.create({'parentId': bookmarkId,
+                                        'title': tabs[i].title,
+                                        'url': tabs[i].url});
+                                    newScrollView += "<li>" + tabs[i].title + "</li>";
+                                }
+                            }
+                            document.getElementById("openLinks").innerHTML = newScrollView;
+                    });
+                    break;
+                default:
+                    chrome.tabs.query(queryInfo, 
+                        function(tabs) {   
+                            // Clear the scroll box, and update it with the links that were saved
+                            // Go through all the open tabs and save each one, and update the scroll view
+                            var newScrollView = ""
+                            for (i = 0; i < tabs.length; i++) {
+                                if (document.getElementById(i.toString()).checked) {
+                                    chrome.bookmarks.create({'parentId': bookmarkId,
+                                        'title': tabs[i].title,
+                                        'url': tabs[i].url});
+                                    newScrollView += "<li>" + tabs[i].title + "</li>";
+                                }
+                            }
+                            document.getElementById("openLinks").innerHTML = newScrollView;
+                    });
+                    chrome.bookmarks.create({'title': 'LinkSave bookmarks'},
+                        function(newFolder) {
+                            console.log("added folder: " + newFolder.title);
+                            chrome.storage.sync.set({'linkSaveFolderExists' : 1},
+                                function() {
+                                    console.log("Created new storage");
+                                });
+                            chrome.storage.sync.set({'linkSaveFolderId' : newFolder.id});
+                            bookmarkId = newFolder.id;
+                        }
+                    );
+                    break;
+
+            }
         }
-    });
+    );
+    // Hide the Save Links button (will reappear when extension is reopened) and show status label
+    document.getElementById("SaveLinks").hidden = true;
+    document.getElementById("StatusLabel").textContent = "Links Saved!";
+    document.getElementById("TopLabel").textContent = "Saved Tabs"
 }
 
+// Function displays all the open tabs in the currently active window in a 
+// scroll box.  Checkboxs are added by each link to include it in the save
 function viewTabs() {
     var queryInfo = {lastFocusedWindow: true};
     chrome.tabs.query(queryInfo, function(tabs) {
-        var currentTabUrl = "";
         document.getElementById("openLinks").innerHTML = "";
         for (i = 0; i < tabs.length; i++) {
-            document.getElementById("openLinks").innerHTML += "<li><input type=\"checkbox\" checked>" + tabs[i].title + "</li>";
+            document.getElementById("openLinks").innerHTML += 
+                "<li><input type=\"checkbox\" id = \"" + i.toString() + "\" checked>" + 
+                tabs[i].title + "</li>";
         }
     });
 }
 
-function SaveLinks()
-{
-	saveTabs();
-    document.getElementById("SaveLinks").hidden = true;
-	popupStatus("Links Saved!");
-}
-
-function OpenLinks()
-{
-	popupStatus("Links Opened");
-}
-
-function popupStatus(statusText)
-{
-    document.getElementById('StatusLabel').textContent = statusText;
-}
-
-function ShowStats() {
-    if (showStatsBool != true) {
-        var totalBlocked = 123; 
-        var shareString = "<br>Share on:<br><img src=''><img src=''><img src=''>"
-        document.getElementById("StatsBox").innerHTML = "<b>Total: </b>" + totalBlocked + shareString; 
-        showStatsBool = true;
-    } else {
-        document.getElementById("StatsBox").innerHTML = "";
-        showStatsBool = false;
-    }
-}
-
+// Display all currently open tabs on active window when extension is open
 viewTabs();
-// FUNCTION CHAINGING is messed up
-document.getElementById("SaveLinks").addEventListener("click", function() { SaveLinks() });
-document.getElementById("Stats").addEventListener("click", function() { ShowStats() });
+document.getElementById("SaveLinks").addEventListener("click", 
+    function() { 
+        saveTabs() 
+    }
+);

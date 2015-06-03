@@ -1,7 +1,6 @@
 // very creative hack?
 var len = document.getElementById("StatusLabel").innerHTML;
-if (len > 0)
-{
+if (len > 0) {
 	var canvas = document.createElement('canvas');
 	var ctx = canvas.getContext("2d"); 
 	ctx.font = "17px Arial";        
