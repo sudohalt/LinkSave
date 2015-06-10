@@ -5,6 +5,7 @@ A chrome extension to save your links to read later
 Everything important is in Button.js
 
 # How to use
-Check out http://sudohalt.github.io/LinkSave/
+Check out our gitpage http://sudohalt.github.io/LinkSave/
 
+# Creators
 Created by [KingMak](https://www.github.com/kingmak) & Umayah Abdennabi ([SudoHalt](https://www.github.com/sudohalt))
