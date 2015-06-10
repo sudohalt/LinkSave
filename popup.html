@@ -1,14 +1,16 @@
-<!doctype html>
+<!-- File: popup.html -->
+<!DOCTYPE html>
 <meta charset = "UTF-8">
-<!-- stupid comment -->
-
 <html>
 	<head> 
+    <meat name = "description" content = "An extension to save the links of all open tabs to read later">
+    <meta name = "author" content = "Umayah Abdennabi">
+    <meta name = "author" content = "Muhammad Khalid">
+    <meta name = "keywords" content = "bookmark, save, links, tabs, chrome-extension">
 		<link rel = "stylesheet" type = "text/css" href = "css/Buttons.css"/>
 		<link rel = "stylesheet" type = "text/css" href = "css/PopupStatus.css"/>
 	</head>
   <body bgcolor = "#ffffff">
-    <!-- <button id = "OpenLinks">Open Links</button> -->
     <center><h3><font color=#79BCEA>
       <p id="TopLabel">
         Open Tabs
@@ -21,13 +23,14 @@
     </div>
     <center>
       <p id="saveInNewP">
-        <input type=checkbox id="saveInNew">Save links in new folder. 
+        <input type=checkbox id="saveInNew">Save in new folder. 
         <input type=textbox id="saveInNewName" value="" disabled>
       </p>
       <button id = "SaveLinks">Save Checked Links</button>
       <p id = "StatusLabel"></p> 
     </center>
-    <a href="">info</a>
+    <a href="http://sudohalt.github.io/LinkSave/">info</a>
+    <script src = "js/jquery-2.1.3.min.js"></script>
     <script src = "js/Buttons.js"></script>    
     <script src = "js/StatusLabel.js"></script>
   </body>
