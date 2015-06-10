@@ -1,4 +1,7 @@
-// very creative hack?
+/* File: StatusLabel.js
+ *
+ */
+// Used for formatting the StatusLabel
 var len = document.getElementById("StatusLabel").innerHTML;
 if (len > 0) {
 	var canvas = document.createElement('canvas');
