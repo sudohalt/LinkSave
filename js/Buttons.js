@@ -267,3 +267,7 @@ document.getElementById("saveInNew").addEventListener("click",
   }
 );
 
+$("#infoPage").on('click', function() {
+  var newURL = "http://sudohalt.github.io/LinkSave/";
+  chrome.tabs.create({ url: newURL });
+});
