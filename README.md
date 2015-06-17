@@ -8,4 +8,4 @@ Everything important is in Button.js
 Check out our gitpage http://sudohalt.github.io/LinkSave/
 
 # Creators
-Created by [KingMak](https://www.github.com/kingmak) & Umayah Abdennabi ([SudoHalt](https://www.github.com/sudohalt))
+Created by Umayah Abdennabi ([sudohalt](https://www.github.com/sudohalt)), Luqman Rom ([luqmanrom](https://github.com/luqmanrom)), Muhammad Khalid ([kingmak](https://www.github.com/kingmak)).
