@@ -20,164 +20,171 @@ var tabTitles = [];
  * for the LinkSave folder, if it is found the id is returned if
  * not false is returned. */
 function findFolder(bookmarks, title) {
-  for(var i=0; i < bookmarks.length; i++) { 
-    if(bookmarks[i].url == null && bookmarks[i].title == title) {
-      return bookmarks[i].id;
-    } else {
-      if(bookmarks[i].children) {  
-        var id = findFolder(bookmarks[i].children, title);
-        if(id) return id;
-      }
+    for (var i = 0; i < bookmarks.length; i++) {
+        if (bookmarks[i].url == null && bookmarks[i].title == title) {
+            return bookmarks[i].id;
+        } else {
+            if (bookmarks[i].children) {
+                var id = findFolder(bookmarks[i].children, title);
+                if (id) return id;
+            }
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 // Function saves all the currently open tabs in the active chrome window
-function saveTabs() {
-  var queryInfo = {'lastFocusedWindow': true};
-  var folderExists = ""
-  /* Get the bookmark tree and use the findFolder to see if the LinkSave folder
-   * exists.  If it does exist we create the bookmarks in that folder, or in a 
-   * new folder within it if the checkbox is clicked.  If the folder does not exist
-   * we create it and then do the above. Since the operations are asynchronous 
-   * we must do everything in the callback functions, so there is a lot of nesting */
-  chrome.bookmarks.getTree(
-    function(bookmarks) {
-      var bookmarkId = findFolder(bookmarks, "LinkSave bookmarks");
-      // bookmark folder does not exist so create it
-      if (bookmarkId == false) {
-        chrome.bookmarks.create({'title': 'LinkSave bookmarks'},
-            function(newFolder) {
-                var bookmarkId = newFolder.id;
-                // Go through all the open tabs and bookmark the links
-                chrome.tabs.query(queryInfo, 
-                    function(tabs) {   
-                      // Clear the scroll box, and update it with the links that were saved
-                      // Go through all the open tabs and save each one, and update the scroll view
-                      var newScrollView = ""
-                      // The user wants to save the tabs in a new folder (within LinkSave folder)
-                      if (document.getElementById("saveInNew").checked) {
-                        // The name of the new folder will be the date if nothing is entered otherwise
-                        // it will be the name the user entered in the textbox below the checkbox
-                        var folderTitle = ""
-                        if (document.getElementById("saveInNewName").value == "") {
-                          var date = new Date()
-                          folderTitle = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth() + 1) + "/" + date.getDay() + "/" + date.getFullYear();
-                        } else {
-                          folderTitle = document.getElementById("saveInNewName").value;
-                        }
-                        var tempScrollView = document.getElementById("openLinks").innerHTML;
-                        // We create a new folder within the LinkSave folder by setting the parent as the LinkSave folder
-                        chrome.bookmarks.create({'parentId' : bookmarkId, 'title' : folderTitle},
-                          function (subNewFolder) {
-                            // Go through all the tabs only saving the checked ones
-                            for (i = 0; i < tabs.length; i++) {
-                              tabTitles.push(tabs[i].title);
-                              if (checkedTabsArr[i.toString()]) {
-                                chrome.bookmarks.create({'parentId': subNewFolder.id,
-                                  'title': tabs[i].title,
-                                  'url': tabs[i].url},
-                                  function(obj) {
-                                    if (chrome.runtime.lastError) {
-                                      console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
+function saveTabs(params) {
+    var folderName = params;
+    var queryInfo = {
+        'lastFocusedWindow': true
+    };
+    var folderExists = ""
+        /* Get the bookmark tree and use the findFolder to see if the LinkSave folder
+         * exists.  If it does exist we create the bookmarks in that folder, or in a 
+         * new folder within it if the checkbox is clicked.  If the folder does not exist
+         * we create it and then do the above. Since the operations are asynchronous 
+         * we must do everything in the callback functions, so there is a lot of nesting */
+    chrome.bookmarks.getTree(
+        function(bookmarks) {
+            var bookmarkId = findFolder(bookmarks, "LinkSave bookmarks");
+            // bookmark folder does not exist so create it
+            if (bookmarkId == false) {
+                chrome.bookmarks.create({
+                        'title': 'LinkSave bookmarks'
+                    },
+                    function(newFolder) {
+                        var bookmarkId = newFolder.id;
+                        // Go through all the open tabs and bookmark the links
+                        chrome.tabs.query(queryInfo,
+                            function(tabs) {
+                                // Clear the scroll box, and update it with the links that were saved
+                                // Go through all the open tabs and save each one, and update the scroll view
+                                var newScrollView = ""
+                                    // The user wants to save the tabs in a new folder (within LinkSave folder)
+                                if (document.getElementById("saveInNew").checked) {
+                                    // The name of the new folder will be the date if nothing is entered otherwise
+                                    // it will be the name the user entered in the textbox below the checkbox
+
+                                    // We create a new folder within the LinkSave folder by setting the parent as the LinkSave folder
+                                    chrome.bookmarks.create({
+                                            'parentId': bookmarkId,
+                                            'title': folderName
+                                        },
+                                        function(subNewFolder) {
+                                            // Go through all the tabs only saving the checked ones
+                                            for (i = 0; i < tabs.length; i++) {
+                                                tabTitles.push(tabs[i].title);
+                                                if (checkedTabsArr[i.toString()]) {
+                                                    chrome.bookmarks.create({
+                                                            'parentId': subNewFolder.id,
+                                                            'title': tabs[i].title,
+                                                            'url': tabs[i].url
+                                                        },
+                                                        function(obj) {
+                                                            if (chrome.runtime.lastError) {
+                                                                console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
+                                                            }
+                                                        }); // end chrome.bookmarks.create
+                                                }
+                                            }
+                                        }); // end chrome.bookmarks.create
+                                } else { // User just wants to save everything in the root of the LinkSave folder
+                                    for (i = 0; i < tabs.length; i++) {
+                                        if (document.getElementById(i.toString()).checked) {
+                                            chrome.bookmarks.create({
+                                                    'parentId': bookmarkId,
+                                                    'title': tabs[i].title,
+                                                    'url': tabs[i].url
+                                                },
+                                                function(obj) {
+                                                    if (chrome.runtime.lastError) {
+                                                        console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
+                                                    }
+                                                }); // end chrome.bookmarks.create
+                                            newScrollView += "<li>" + tabs[i].title + "</li>";
+                                        }
+                                    }
+                                }
+                                if (document.getElementById("saveInNew").checked) {
+                                    document.getElementById("openLinks").innerHTML = "";
+                                    for (i = 0; i < tabs.length; i++) {
+                                        if (checkedTabsArr[i.toString()]) {
+                                            document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
+                                        }
+                                    }
+                                } else {
+                                    document.getElementById("openLinks").innerHTML = newScrollView;
+                                }
+                            }); // end chrome.tabs.query
+                    }); // end chrome.bookmarks.create
+            } else { // The Folder has already been created, so do the same as above just not creating the LinkSave folder
+                chrome.tabs.query(queryInfo,
+                    function(tabs) {
+                        var newScrollView = ""
+                            // Create new folder
+                        if (document.getElementById("saveInNew").checked) {
+
+                            var tempScrollView = document.getElementById("openLinks").innerHTML;
+                            chrome.bookmarks.create({
+                                    'parentId': bookmarkId,
+                                    'title': folderName
+                                },
+                                function(subNewFolder) {
+                                    //console.log(tabs.length);
+                                    for (i = 0; i < tabs.length; i++) {
+                                        tabTitles.push(tabs[i].title);
+                                        if (checkedTabsArr[i.toString()]) {
+                                            chrome.bookmarks.create({
+                                                    'parentId': subNewFolder.id,
+                                                    'title': tabs[i].title,
+                                                    'url': tabs[i].url
+                                                },
+                                                function(obj) {
+                                                    if (chrome.runtime.lastError) {
+                                                        console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
+                                                    }
+                                                }); // end chrome.bookmarks.create
+                                        }
                                     }
                                 }); // end chrome.bookmarks.create
-                              }
-                            }  
-                        }); // end chrome.bookmarks.create
-                      } else { // User just wants to save everything in the root of the LinkSave folder
-                          for (i = 0; i < tabs.length; i++) {
-                            if (document.getElementById(i.toString()).checked) {
-                              chrome.bookmarks.create({'parentId': bookmarkId,
-                                'title': tabs[i].title,
-                                'url': tabs[i].url},
-                                function(obj) {
-                                  if (chrome.runtime.lastError) {
-                                    console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
-                                  }
-                              }); // end chrome.bookmarks.create
-                              newScrollView += "<li>" + tabs[i].title + "</li>";
+                        } else {
+                            for (i = 0; i < tabs.length; i++) {
+                                if (document.getElementById(i.toString()).checked) {
+                                    chrome.bookmarks.create({
+                                            'parentId': bookmarkId,
+                                            'title': tabs[i].title,
+                                            'url': tabs[i].url
+                                        },
+                                        function(obj) {
+                                            if (chrome.runtime.lastError) {
+                                                console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
+                                            }
+                                        }); // end chrome.bookmarks.create
+                                    newScrollView += "<li>" + tabs[i].title + "</li>";
+                                }
                             }
                         }
-                      }
-                      if (document.getElementById("saveInNew").checked) {
-                        document.getElementById("openLinks").innerHTML = "";
-                        for (i = 0; i < tabs.length; i++) {
-                          if (checkedTabsArr[i.toString()]) {
-                            document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
-                          }
-                        }
-                      } else {
-                        document.getElementById("openLinks").innerHTML = newScrollView;
-                      }
-                }); // end chrome.tabs.query
-            }); // end chrome.bookmarks.create
-      } else { // The Folder has already been created, so do the same as above just not creating the LinkSave folder
-        chrome.tabs.query(queryInfo, 
-          function(tabs) {   
-            var newScrollView = ""
-            // Create new folder
-            if (document.getElementById("saveInNew").checked) {
-              var folderTitle = ""
-              if (document.getElementById("saveInNewName").value == "") {
-                var date = new Date()
-                folderTitle = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth() + 1) + "/" + date.getDay() + "/" + date.getFullYear();
-              } else {
-                folderTitle = document.getElementById("saveInNewName").value;
-              }     
-              var tempScrollView = document.getElementById("openLinks").innerHTML;
-              chrome.bookmarks.create({'parentId' : bookmarkId, 'title' : folderTitle},
-                function (subNewFolder) {
-                  //console.log(tabs.length);
-                  for (i = 0; i < tabs.length; i++) {
-                    tabTitles.push(tabs[i].title);
-                    if (checkedTabsArr[i.toString()]) {
-                      chrome.bookmarks.create({'parentId': subNewFolder.id,
-                        'title': tabs[i].title,
-                        'url': tabs[i].url},
-                        function(obj) {
-                          if (chrome.runtime.lastError) {
-                            console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
-                          }
-                      }); // end chrome.bookmarks.create
-                    }
-                  } 
-              }); // end chrome.bookmarks.create
-            } else {
-              for (i = 0; i < tabs.length; i++) {
-                if (document.getElementById(i.toString()).checked) {
-                  chrome.bookmarks.create({'parentId': bookmarkId,
-                    'title': tabs[i].title,
-                    'url': tabs[i].url},
-                    function(obj) {
-                    if (chrome.runtime.lastError) {
-                      console.log("Error while accessing id. Message: " + chrome.runtime.lastError.message);
-                    }
-                  }); // end chrome.bookmarks.create
-                  newScrollView += "<li>" + tabs[i].title + "</li>";
-                }
-              }
-            }
-            if (document.getElementById("saveInNew").checked) {
-              document.getElementById("openLinks").innerHTML = "";
-              for (i = 0; i < tabs.length; i++) {
-                if (checkedTabsArr[i.toString()]) {
-                  document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
-                }
-              }
-            } else {
-              document.getElementById("openLinks").innerHTML = newScrollView;
-            }
-          }); // end chrome.tabs.query
-      } // end else
-  }); // end chrome.bookmarks.getTree
 
-  // Hide the Save Links button (will reappear when extension is reopened) and show status label
-  document.getElementById('saveInNewP').hidden = true;
-  document.getElementById("SaveLinks").hidden = true;
-  document.getElementById("StatusLabel").textContent = "Links Saved in bookmarks!";
-  document.getElementById("TopLabel").textContent = "Saved Tabs"
+                        if (document.getElementById("saveInNew").checked) {
+                            document.getElementById("openLinks").innerHTML = "";
+                            for (i = 0; i < tabs.length; i++) {
+                                if (checkedTabsArr[i.toString()]) {
+                                    document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
+                                }
+                            }
+                        } else {
+                            document.getElementById("openLinks").innerHTML = newScrollView;
+                        }
+                    }); // end chrome.tabs.query
+            } // end else
+        }); // end chrome.bookmarks.getTree
+
+    // Hide the Save Links button (will reappear when extension is reopened) and show status label
+    document.getElementById('saveInNewP').hidden = true;
+    document.getElementById("SaveLinks").hidden = true;
+    document.getElementById("StatusLabel").textContent = "Links Saved in bookmarks!";
+    document.getElementById("TopLabel").textContent = "Saved Tabs"
 }
 
 // Function displays all the open tabs in the currently active window in a 
@@ -188,7 +195,7 @@ function viewTabs() {
     };
 
     // Go through all the tabs open, and add them to the scrollview along with a number and checkbox
-    chrome.tabs.query(queryInfo, function (tabs) {
+    chrome.tabs.query(queryInfo, function(tabs) {
 
         for (i = 0; i < tabs.length; i++) {
             var thisTab = tabs[i];
@@ -230,15 +237,15 @@ function viewTabs() {
         }
 
         function attachChangeListener(element, index) {
-            $(element).change(function () {
+            $(element).change(function() {
                 if ($(this).is(":checked")) {
                     //match the array's value to that of the new checkbox state
                     checkedTabsArr[index] = true;
-                   //console.log(checkedTabsArr);
+                    //console.log(checkedTabsArr);
                 } else {
                     //match the array's value to that of the new checkbox state
                     checkedTabsArr[index] = false;
-                   // console.log(checkedTabsArr);
+                    // console.log(checkedTabsArr);
                 }
             });
         }
@@ -249,21 +256,32 @@ function viewTabs() {
 viewTabs();
 
 // chrome api does not allow for inline js for security reasons so we add it here
-document.getElementById("SaveLinks").addEventListener("click", 
-    function() { 
-        saveTabs() 
-    }
-);
-
-document.getElementById("saveInNew").addEventListener("click",
-  function() {
-    var cond = !document.getElementById('saveInNew').checked;
-    if (cond) {
-      document.getElementById('saveInNewName').value = "";
-      document.getElementById('saveInNewName').disabled = true;
+document.getElementById("SaveLinks").addEventListener("click", function() {
+    var folderName;
+    if (document.getElementById('saveInNew').checked) {
+        folderName = document.getElementById('saveInNewName').value
+        if (folderName === "") {
+            var date = new Date();
+            folderName = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth() + 1) + "/" + date.getDay() + "/" + date.getFullYear();
+        }
     } else {
-      document.getElementById('saveInNewName').disabled = false;
+        folderName = "";
     }
-  }
-);
+    saveTabs(folderName);
+});
 
+document.getElementById("saveInNew").addEventListener("click", function() {
+        var cond = !document.getElementById('saveInNew').checked;
+        if (cond) {
+            document.getElementById('saveInNewName').value = "";
+            document.getElementById('saveInNewName').disabled = true;
+            document.getElementById("saveInNewName").style.visibility = "hidden";
+
+
+        } else {
+            document.getElementById('saveInNewName').disabled = false;
+            document.getElementById("saveInNewName").style.visibility = "visible";
+
+        }
+    }
+);

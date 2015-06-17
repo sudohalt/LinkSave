@@ -37,3 +37,7 @@
 	top : 1px;
 	position : relative;
 }
+
+#saveInNewName {
+	visibility: hidden;
+}
