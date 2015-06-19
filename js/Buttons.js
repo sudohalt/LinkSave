@@ -39,7 +39,6 @@ function saveTabs(params) {
     var queryInfo = {
         'lastFocusedWindow': true
     };
-    var folderExists = ""
         /* Get the bookmark tree and use the findFolder to see if the LinkSave folder
          * exists.  If it does exist we create the bookmarks in that folder, or in a 
          * new folder within it if the checkbox is clicked.  If the folder does not exist
@@ -232,21 +231,11 @@ function viewTabs() {
             //toggle the state of the checkbox
             checkbox.checked = !checkbox.checked;
             //console.log(title + " updated: " + checkbox.checked);
-
-
         }
 
         function attachChangeListener(element, index) {
             $(element).change(function() {
-                if ($(this).is(":checked")) {
-                    //match the array's value to that of the new checkbox state
-                    checkedTabsArr[index] = true;
-                    //console.log(checkedTabsArr);
-                } else {
-                    //match the array's value to that of the new checkbox state
-                    checkedTabsArr[index] = false;
-                    // console.log(checkedTabsArr);
-                }
+                    checkedTabsArr[index] = Boolean($(this).is(":checked"));
             });
         }
     });
@@ -259,7 +248,7 @@ viewTabs();
 document.getElementById("SaveLinks").addEventListener("click", function() {
     var folderName;
     if (document.getElementById('saveInNew').checked) {
-        folderName = document.getElementById('saveInNewName').value
+        folderName = document.getElementById('saveInNewName').value;
         if (folderName === "") {
             var date = new Date();
             folderName = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth() + 1) + "/" + date.getDay() + "/" + date.getFullYear();
@@ -270,14 +259,14 @@ document.getElementById("SaveLinks").addEventListener("click", function() {
     saveTabs(folderName);
 });
 
+
+// Hide the input box if the checkbox is not checked
 document.getElementById("saveInNew").addEventListener("click", function() {
         var cond = !document.getElementById('saveInNew').checked;
         if (cond) {
             document.getElementById('saveInNewName').value = "";
             document.getElementById('saveInNewName').disabled = true;
             document.getElementById("saveInNewName").style.visibility = "hidden";
-
-
         } else {
             document.getElementById('saveInNewName').disabled = false;
             document.getElementById("saveInNewName").style.visibility = "visible";
