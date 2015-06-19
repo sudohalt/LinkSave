@@ -44,8 +44,7 @@ function saveTabs(params) {
          * new folder within it if the checkbox is clicked.  If the folder does not exist
          * we create it and then do the above. Since the operations are asynchronous 
          * we must do everything in the callback functions, so there is a lot of nesting */
-    chrome.bookmarks.getTree(
-        function(bookmarks) {
+    chrome.bookmarks.getTree(function(bookmarks) {
             var bookmarkId = findFolder(bookmarks, "LinkSave bookmarks");
             // bookmark folder does not exist so create it
             if (bookmarkId == false) {
@@ -118,8 +117,7 @@ function saveTabs(params) {
                             }); // end chrome.tabs.query
                     }); // end chrome.bookmarks.create
             } else { // The Folder has already been created, so do the same as above just not creating the LinkSave folder
-                chrome.tabs.query(queryInfo,
-                    function(tabs) {
+                chrome.tabs.query(queryInfo, function(tabs) {
                         var newScrollView = "";
                             // Create new folder
                         if (document.getElementById("saveInNew").checked) {
