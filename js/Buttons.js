@@ -39,14 +39,12 @@ function saveTabs(params) {
     var queryInfo = {
         'lastFocusedWindow': true
     };
-    var folderExists = ""
         /* Get the bookmark tree and use the findFolder to see if the LinkSave folder
          * exists.  If it does exist we create the bookmarks in that folder, or in a 
          * new folder within it if the checkbox is clicked.  If the folder does not exist
          * we create it and then do the above. Since the operations are asynchronous 
          * we must do everything in the callback functions, so there is a lot of nesting */
-    chrome.bookmarks.getTree(
-        function(bookmarks) {
+    chrome.bookmarks.getTree(function(bookmarks) {
             var bookmarkId = findFolder(bookmarks, "LinkSave bookmarks");
             // bookmark folder does not exist so create it
             if (bookmarkId == false) {
@@ -60,7 +58,7 @@ function saveTabs(params) {
                             function(tabs) {
                                 // Clear the scroll box, and update it with the links that were saved
                                 // Go through all the open tabs and save each one, and update the scroll view
-                                var newScrollView = ""
+                                var newScrollView = "";
                                     // The user wants to save the tabs in a new folder (within LinkSave folder)
                                 if (document.getElementById("saveInNew").checked) {
                                     // The name of the new folder will be the date if nothing is entered otherwise
@@ -90,7 +88,7 @@ function saveTabs(params) {
                                             }
                                         }); // end chrome.bookmarks.create
                                 } else { // User just wants to save everything in the root of the LinkSave folder
-                                    for (i = 0; i < tabs.length; i++) {
+                                    for (var i = 0; i < tabs.length; i++) {
                                         if (document.getElementById(i.toString()).checked) {
                                             chrome.bookmarks.create({
                                                     'parentId': bookmarkId,
@@ -119,9 +117,8 @@ function saveTabs(params) {
                             }); // end chrome.tabs.query
                     }); // end chrome.bookmarks.create
             } else { // The Folder has already been created, so do the same as above just not creating the LinkSave folder
-                chrome.tabs.query(queryInfo,
-                    function(tabs) {
-                        var newScrollView = ""
+                chrome.tabs.query(queryInfo, function(tabs) {
+                        var newScrollView = "";
                             // Create new folder
                         if (document.getElementById("saveInNew").checked) {
 
@@ -168,7 +165,7 @@ function saveTabs(params) {
 
                         if (document.getElementById("saveInNew").checked) {
                             document.getElementById("openLinks").innerHTML = "";
-                            for (i = 0; i < tabs.length; i++) {
+                            for (var i = 0; i < tabs.length; i++) {
                                 if (checkedTabsArr[i.toString()]) {
                                     document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
                                 }
@@ -197,14 +194,14 @@ function viewTabs() {
     // Go through all the tabs open, and add them to the scrollview along with a number and checkbox
     chrome.tabs.query(queryInfo, function(tabs) {
 
-        for (i = 0; i < tabs.length; i++) {
+        for (var i = 0; i < tabs.length; i++) {
             var thisTab = tabs[i];
 
             // add checkboxes to each link for the user to include or disclude
             // start by creating a blank checkbox element
             var thisCheckbox = document.createElement('input');
             thisCheckbox.type = "checkbox";
-            thisCheckbox.id = i;
+            thisCheckbox.id = i.toString();
             thisCheckbox.checked = true;
 
             //Add the event listener to the newly created checkbox
@@ -232,21 +229,11 @@ function viewTabs() {
             //toggle the state of the checkbox
             checkbox.checked = !checkbox.checked;
             //console.log(title + " updated: " + checkbox.checked);
-
-
         }
 
         function attachChangeListener(element, index) {
             $(element).change(function() {
-                if ($(this).is(":checked")) {
-                    //match the array's value to that of the new checkbox state
-                    checkedTabsArr[index] = true;
-                    //console.log(checkedTabsArr);
-                } else {
-                    //match the array's value to that of the new checkbox state
-                    checkedTabsArr[index] = false;
-                    // console.log(checkedTabsArr);
-                }
+                    checkedTabsArr[index] = Boolean($(this).is(":checked"));
             });
         }
     });
@@ -259,7 +246,7 @@ viewTabs();
 document.getElementById("SaveLinks").addEventListener("click", function() {
     var folderName;
     if (document.getElementById('saveInNew').checked) {
-        folderName = document.getElementById('saveInNewName').value
+        folderName = document.getElementById('saveInNewName').value;
         if (folderName === "") {
             var date = new Date();
             folderName = date.getHours() + ":" + date.getMinutes() + " " + (date.getMonth() + 1) + "/" + date.getDay() + "/" + date.getFullYear();
@@ -270,14 +257,14 @@ document.getElementById("SaveLinks").addEventListener("click", function() {
     saveTabs(folderName);
 });
 
+
+// Hide the input box if the checkbox is not checked
 document.getElementById("saveInNew").addEventListener("click", function() {
         var cond = !document.getElementById('saveInNew').checked;
         if (cond) {
             document.getElementById('saveInNewName').value = "";
             document.getElementById('saveInNewName').disabled = true;
             document.getElementById("saveInNewName").style.visibility = "hidden";
-
-
         } else {
             document.getElementById('saveInNewName').disabled = false;
             document.getElementById("saveInNewName").style.visibility = "visible";
