@@ -59,7 +59,7 @@ function saveTabs(params) {
                             function(tabs) {
                                 // Clear the scroll box, and update it with the links that were saved
                                 // Go through all the open tabs and save each one, and update the scroll view
-                                var newScrollView = ""
+                                var newScrollView = "";
                                     // The user wants to save the tabs in a new folder (within LinkSave folder)
                                 if (document.getElementById("saveInNew").checked) {
                                     // The name of the new folder will be the date if nothing is entered otherwise
@@ -89,7 +89,7 @@ function saveTabs(params) {
                                             }
                                         }); // end chrome.bookmarks.create
                                 } else { // User just wants to save everything in the root of the LinkSave folder
-                                    for (i = 0; i < tabs.length; i++) {
+                                    for (var i = 0; i < tabs.length; i++) {
                                         if (document.getElementById(i.toString()).checked) {
                                             chrome.bookmarks.create({
                                                     'parentId': bookmarkId,
@@ -120,7 +120,7 @@ function saveTabs(params) {
             } else { // The Folder has already been created, so do the same as above just not creating the LinkSave folder
                 chrome.tabs.query(queryInfo,
                     function(tabs) {
-                        var newScrollView = ""
+                        var newScrollView = "";
                             // Create new folder
                         if (document.getElementById("saveInNew").checked) {
 
@@ -167,7 +167,7 @@ function saveTabs(params) {
 
                         if (document.getElementById("saveInNew").checked) {
                             document.getElementById("openLinks").innerHTML = "";
-                            for (i = 0; i < tabs.length; i++) {
+                            for (var i = 0; i < tabs.length; i++) {
                                 if (checkedTabsArr[i.toString()]) {
                                     document.getElementById("openLinks").innerHTML += "<li>" + tabs[i].title + "</li>";
                                 }
@@ -196,14 +196,14 @@ function viewTabs() {
     // Go through all the tabs open, and add them to the scrollview along with a number and checkbox
     chrome.tabs.query(queryInfo, function(tabs) {
 
-        for (i = 0; i < tabs.length; i++) {
+        for (var i = 0; i < tabs.length; i++) {
             var thisTab = tabs[i];
 
             // add checkboxes to each link for the user to include or disclude
             // start by creating a blank checkbox element
             var thisCheckbox = document.createElement('input');
             thisCheckbox.type = "checkbox";
-            thisCheckbox.id = i;
+            thisCheckbox.id = i.toString();
             thisCheckbox.checked = true;
 
             //Add the event listener to the newly created checkbox
